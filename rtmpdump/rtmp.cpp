@@ -14,7 +14,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with RTMPDumper; see the file COPYING.  If not, write to
+ *  along with RTMPDump; see the file COPYING.  If not, write to
  *  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *  http://www.gnu.org/copyleft/gpl.html
  *
@@ -46,6 +46,12 @@ static const int packetSize[] = { 12, 8, 4, 1 };
 #define RTMP_PACKET_SIZE_MEDIUM   1
 #define RTMP_PACKET_SIZE_SMALL    2
 #define RTMP_PACKET_SIZE_MINIMUM  3
+
+clock_t GetTime()
+{
+	struct tms t;
+	return times(&t);
+}
 
 CRTMP::CRTMP() : m_socket(0)
 {
@@ -546,7 +552,7 @@ bool CRTMP::SendCheckBW()
   packet.m_nChannel = 0x03;   // control channel (invoke)
   packet.m_headerType = RTMP_PACKET_SIZE_LARGE;
   packet.m_packetType = 0x14; // INVOKE
-  packet.m_nInfoField1 = times(0);
+  packet.m_nInfoField1 = GetTime();
 
   packet.AllocPacket(256); // should be enough
   char *enc = packet.m_body;
@@ -638,7 +644,7 @@ bool CRTMP::SendPing(short nType, unsigned int nObject, unsigned int nTime)
   packet.m_nChannel = 0x02;   // control channel (ping)
   packet.m_headerType = RTMP_PACKET_SIZE_MEDIUM;
   packet.m_packetType = 0x04; // ping
-  packet.m_nInfoField1 = times(0);
+  packet.m_nInfoField1 = GetTime();
 
   int nSize = (nType==0x03?10:6); // type 3 is the buffer time and requires all 3 parameters. all in all 10 bytes.
   packet.AllocPacket(nSize);
@@ -1095,7 +1101,7 @@ bool CRTMP::HandShake()
 
   //Log(LOGDEBUG, "HandShake: ");
   clientsig[0] = 0x3;
-  uint32_t uptime = htonl(times(0));
+  uint32_t uptime = htonl(GetTime());
   memcpy(clientsig + 1, &uptime, 4);
   memset(clientsig + 5, 0, 4);
 

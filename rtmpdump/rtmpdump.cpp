@@ -1,4 +1,4 @@
-/*  RTMP Dumper
+/*  RTMPDump
  *  Copyright (C) 2009 Andrej Stepanchuk
  *
  *  This Program is free software; you can redistribute it and/or modify
@@ -12,7 +12,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with RTMPDumper; see the file COPYING.  If not, write to
+ *  along with RTMPDump; see the file COPYING.  If not, write to
  *  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  *  http://www.gnu.org/copyleft/gpl.html
  *
@@ -32,9 +32,11 @@
 
 using namespace RTMP_LIB;
 
-#define RD_SUCCESS	0
-#define RD_FAILED	1
-#define RD_INCOMPLETE	2
+#define RTMPDUMP_VERSION	"v1.3c"
+
+#define RD_SUCCESS		0
+#define RD_FAILED		1
+#define RD_INCOMPLETE		2
 
 uint32_t nTimeStamp = 0;
 
@@ -395,7 +397,7 @@ int main(int argc, char **argv)
 
 	char DEFAULT_FLASH_VER[]  = "LNX 9,0,124,0";
 
- 	printf("RTMP Dumper v1.3\n");
+ 	printf("RTMPDump %s\n", RTMPDUMP_VERSION);
 	printf("(c) 2009 Andrej Stepanchuk, license: GPL\n\n");
 
 	int opt;
@@ -466,7 +468,7 @@ int main(int argc, char **argv)
 	}
 
 	if(url == 0) {
-		printf("ERROR: You must specify an url (-r \"rtmp://host[:port]/playpath\" )\n");
+		printf("ERROR: You must specify a url (-r \"rtmp://host[:port]/playpath\" )\n");
 		return RD_FAILED;
 	}
 	if(flvFile == 0) {
