@@ -1,6 +1,8 @@
 /*  RTMPDump
  *  Copyright (C) 2009 Andrej Stepanchuk
  *
+ *  Copyright (C) 2009 Uldis Bojars <captsolo@gmail.com>
+ *
  *  This Program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2, or (at your option)
@@ -410,6 +412,7 @@ int main(int argc, char **argv)
 		{"app",     1, NULL, 'a'},
 		{"auth",    1, NULL, 'u'},
 		{"flashVer",1, NULL, 'f'},
+        {"stream",  1, NULL, 'g'},
 		{"flv",     1, NULL, 'o'},
 		{"resume",  0, NULL, 'e'},
 		{0,0,0,0}
@@ -417,7 +420,7 @@ int main(int argc, char **argv)
 
 	signal(SIGINT, sigIntHandler);
 
-	while((opt = getopt_long(argc, argv, "hr:s:t:p:a:f:o:u:", longopts, NULL)) != -1) {
+	while((opt = getopt_long(argc, argv, "hr:s:t:p:a:f:o:u:g:", longopts, NULL)) != -1) {
 		switch(opt) {
 			case 'h':
 				printf("\nThis program dumps the media contnt streamed over rtmp.\n\n");
@@ -429,6 +432,7 @@ int main(int argc, char **argv)
 				printf("--app|-a app\t\tName of player used\n");
 				printf("--auth|-u string\tAuthentication string to be appended to the connect string\n");
 				printf("--flashVer|-f string\tflash version string (default: \"LNX 9,0,124,0\")\n");
+                printf("--stream|-g string\tName of the string to play\n"); 
 				printf("--flv|-o string\t\tflv output file name\n\n");
 				printf("--resume|-e\n\n");
 				printf("If you don't pass parameters for swfUrl, tcUrl, pageUrl, app or auth these propertiews will not be included in the connect ");
@@ -452,6 +456,9 @@ int main(int argc, char **argv)
 			case 'f':
 				flashVer = optarg;
 				break;
+            case 'g':
+                streamName = optarg;
+                break;
 			case 'o':
 				flvFile = optarg;
 				break;
@@ -489,6 +496,10 @@ int main(int argc, char **argv)
 
 	Log(LOGDEBUG, "Setting buffer time to: %dms", bufferTime);
 	rtmp->SetBufferMS(bufferTime);
+
+    if(streamName) {
+        rtmp->SetPlayPath(streamName);
+    }
 
 	unsigned long size = 0;
         uint32_t timestamp = 0;
