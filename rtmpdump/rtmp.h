@@ -63,7 +63,7 @@ class CRTMP
 
       //void SetPlayer(const std::string &strPlayer);
       //void SetPageUrl(const std::string &strPageUrl);
-      //void SetPlayPath(const std::string &strPlayPath);
+      void SetPlayPath(const std::string &strPlayPath);
       void SetBufferMS(int size);
       void UpdateBufferMS();
 
@@ -136,7 +136,7 @@ class CRTMP
       //std::string m_strPlayer;
       //std::string m_strPageUrl;
       //std::string m_strLink;
-      //std::string m_strPlayPath;
+      std::string m_strPlayPath;
 
       std::vector<std::string> m_methodCalls; //remote method calls queue
 

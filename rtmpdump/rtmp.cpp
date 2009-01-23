@@ -74,6 +74,12 @@ void CRTMP::SetBufferMS(int size)
 {
   m_nBufferMS = size;
 }
+
+void CRTMP::SetPlayPath(const std::string &strPlayPath) 
+{
+  m_strPlayPath = strPlayPath;
+}
+
 //*
 void CRTMP::UpdateBufferMS()
 {
@@ -602,9 +608,9 @@ bool CRTMP::SendPlay()
   *enc = 0x05; // NULL
   enc++;
   // use m_strPlayPath
-  std::string strPlay;// = m_strPlayPath;
-  //if (strPlay.empty())
-  //{
+  std::string strPlay = m_strPlayPath;
+  if (strPlay.empty())
+  {
     // or use slist parameter, if there is one
     std::string url = std::string(Link.url);
     int nPos = url.find("slist=");
@@ -623,7 +629,7 @@ bool CRTMP::SendPlay()
 			Log(LOGERROR, "%s, no name to play!", __FUNCTION__);
 			return false;
 		}
-  //}
+  }
 
   Log(LOGDEBUG, "Sending play: %s", strPlay.c_str());
   enc += EncodeString(enc, strPlay.c_str());
