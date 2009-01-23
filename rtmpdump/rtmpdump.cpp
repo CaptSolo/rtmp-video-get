@@ -34,7 +34,7 @@
 
 using namespace RTMP_LIB;
 
-#define RTMPDUMP_VERSION	"v1.3c"
+#define RTMPDUMP_VERSION	"v1.3c-u1"
 
 #define RD_SUCCESS		0
 #define RD_FAILED		1
