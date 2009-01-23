@@ -1,6 +1,7 @@
 CFLAGS=-Wall
 CXXFLAGS=-Wall
-LDFLAGS=-Wall
+LDFLAGS=-Wall -L/opt/local/lib # needed for MacPorts. using environment vars (LD_LIBRARY_PATH) to show library location did not work :(
+BOOST=-lboost_regex-mt # on MacPorts only multithreaded version is installed by default. could use autoconf to find a variant that exists on a system.
 
 all: rtmpdump
 
@@ -8,10 +9,7 @@ clean:
 	rm -f rtmpdump *.o
 
 rtmpdump: log.o rtmp.o AMFObject.o rtmppacket.o rtmpdump.o
-	g++ $(LDFLAGS) $^ -o $@ -lboost_regex
-
-#rtmpdump: rtmp.cpp log.cpp AMFObject.cpp rtmppacket.cpp rtmpdump.cpp rtmp.h log.h AMFObject.h rtmppacket.h
-#    g++ -Wall rtmp.cpp log.cpp AMFObject.cpp rtmppacket.cpp rtmpdump.cpp -o rtmpdump -lboost_regex-mt -I/opt/local/include -L/opt/local/lib
+	g++ $(LDFLAGS) $^ -o $@ $(BOOST)
 
 log.o: log.cpp log.h Makefile
 rtmp.o: rtmp.cpp rtmp.h log.h AMFObject.h Makefile
