@@ -394,6 +394,7 @@ int main(int argc, char **argv)
 	char *app = 0;
 	char *auth = 0;
 	char *flashVer = 0;
+    char *streamName = 0;
 
 	char *flvFile = 0;
 
