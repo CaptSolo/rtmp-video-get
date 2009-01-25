@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
- *  File: get_video.py - Retrieves video parameters from videolectures.net URLs
+ *  File: get_video.py - Retrieves streaming video from videolectures.net URLs
  *
  *  Copyright (c) 2009 Uldis Bojars <captsolo@gmail.com>
  *
@@ -22,7 +22,7 @@
  *
 """
 
-from pprint import pprint
+import os
 import re
 import sys
 import urllib2
@@ -49,11 +49,36 @@ def gen_command(p):
       -g %(path)s \\
       -a video 
 """ 
-    print tpl % p
+    return tpl % p
+
+def exec_command(cmd):
+    print ">>> Executing:"
+    print cmd
+    print
+
+    try:
+        ret = os.system(cmd)
+        print
+        print "Rtmpdump finished.\nResult code:", ret
+    except OSError, e:
+        print >>sys.stderr, "Execution failed:", e
 
 def main(in_url):
-    gen_command(get_params(in_url))
+    cmd = gen_command(get_params(in_url))
+    exec_command(cmd)
+
+usage = """
+get_video.py - Retrieve streaming video from videolectures.net URLs
+
+Usage: ./get_video.py http://url
+
+Parameters:
+  - http://url - a URL to a videolectures.net page containing the video
+"""
 
 if __name__ == "__main__":
-    main( sys.argv[1] )
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    else:
+        print usage
 
