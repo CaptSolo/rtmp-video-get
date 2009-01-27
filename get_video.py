@@ -41,12 +41,11 @@ def get_params(in_url):
 
 def gen_command(p):
     tpl = """rtmpdump/rtmpdump \\
-      -r %(rtmp)s/%(path)s \\
+      -r %(rtmp)s/%(path)s&slist=%(path)s \\
       -t %(rtmp)s \\
       -o %(file)s \\
       -s http://media.videolectures.net/jw-player/player.swf \\
       -f "MAC 9,0,151,0" \\
-      -g %(path)s \\
       -a video 
 """ 
     return tpl % p
