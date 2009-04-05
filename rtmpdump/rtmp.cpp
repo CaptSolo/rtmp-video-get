@@ -117,15 +117,18 @@ bool CRTMP::Connect(char *url, char *tcUrl, char *player, char *pageUrl, char *a
 	return false;
   }
   strncpy(Link.hostname, matches[1].first, matches[1].second-matches[1].first);
+  Link.hostname[matches[1].second-matches[1].first]=0x00;
 
   Log(LOGDEBUG, "Hostname: %s", Link.hostname);
 
-  char portstr[256];
+  char portstr[6];
   if(matches[4].second-matches[4].first > 5) {
           Log(LOGERROR, "Port must not be longer than 5 digits!");
 	  return false;
   }
   strncpy(portstr, matches[4].first, matches[4].second-matches[4].first);
+  portstr[matches[4].second-matches[4].first]=0x00;
+
   Link.port = atoi(portstr);
 
   if (Link.port == 0)
@@ -396,20 +399,6 @@ bool CRTMP::Connect()
 
 bool CRTMP::SendConnectPacket()
 {
-  //CURL url(m_strLink);
-  /*std::string app = std::string(Link.url);
-
-  std::string::size_type slistPos = std::string(Link.url).find("slist=");
-  if ( slistPos == std::string::npos ){
-    // no slist parameter. send the path as the app
-    // if URL path contains a slash, use the part up to that as the app
-    // as we'll send the part after the slash as the thing to play
-    std::string::size_type pos_slash = app.find_last_of("/");
-    if( pos_slash != std::string::npos ){
-      app = app.substr(0,pos_slash);
-    }
-  }*/
-
   RTMPPacket packet;
   packet.m_nChannel = 0x03;   // control channel (invoke)
   packet.m_headerType = RTMP_PACKET_SIZE_LARGE;
