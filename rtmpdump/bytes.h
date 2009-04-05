@@ -34,12 +34,23 @@ typedef unsigned long long int uint64_t;
       | (((x) & 0x00000000000000ffull) << 56))
 
 #else
+#ifdef __APPLE__ 
+#include <machine/endian.h> 
+#include <libkern/_OSByteOrder.h> 
+#define __BYTE_ORDER BYTE_ORDER 
+#define __FLOAT_WORD_ORDER BYTE_ORDER 
+#define __BIG_ENDIAN BIG_ENDIAN 
+#define __LITTLE_ENDIAN LITTLE_ENDIAN 
+#define __bswap_32 __DARWIN_OSSwapConstInt32 
+#define __bswap_64 __DARWIN_OSSwapConstInt64 
+#else 
 #include <endian.h>
 #include <byteswap.h>
 
 typedef __uint64_t uint64_t;
 typedef __uint32_t uint32_t;
 #endif
+#endif 
 
 #if !defined(__BYTE_ORDER) || !defined(__FLOAT_WORD_ORDER)
 #error "Undefined byte and float word order!"
